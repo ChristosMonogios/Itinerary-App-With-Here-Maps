@@ -10,6 +10,14 @@ block content
           button(class='btn btn-lg btn-primary btn-block', type='submit') Search!
   div.row
     div.col-sm-6.col-md-6
-      h1.text-center List
+      div(ng-controller="ListController")
+        h1.text-center Itinerary list
+        button(ng-click="moveRowUp()") up
+        button(ng-click="moveRowDown()") down
+        button(ng-click="removeRow()") remove
+        div(ng-model="itinerary", name="itinerary", class="list-group")
+          a(href="", class="list-group-item text-center", ng-repeat="route in itinerary", ng-click="selectRow($index)",
+            ng-class="{'list-group-item-info': $index === indexOfSelectedRow}")
+              | {{ route }}
     div.col-sm-6.col-md-6
       h1.text-center Itinerary in map
