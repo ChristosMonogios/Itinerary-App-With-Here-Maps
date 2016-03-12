@@ -1,19 +1,18 @@
 mapApp.controller("ListController", ["$rootScope", "$scope", "ItineraryService",
     function ($rootScope, $scope, ItineraryService) {
         $scope.indexOfSelectedRow = null;
-        $scope.itinerary = [];
+        $scope.itineraryList = [];
         
         $scope.$watch(function () { return ItineraryService.getRoute(); }, 
             function (newValue, oldValue) {
                 if (newValue !== oldValue) {
-                    $scope.addRow(newValue);
+                    $scope.addRowInTheList(newValue);
                 }
             }, true
         );       
         
-        $scope.addRow = function(waypoint) {
-            $scope.itinerary.push(waypoint);
-            ItineraryService.updateItinerary($scope.itinerary);
+        $scope.addRowInTheList = function(waypoint) {
+            $scope.itineraryList.push(waypoint);
         };
         
         $scope.selectRow = function(index) {
@@ -21,36 +20,17 @@ mapApp.controller("ListController", ["$rootScope", "$scope", "ItineraryService",
         };
 
         $scope.moveRowUp = function() {
-            if ($scope.indexOfSelectedRow === 0) {
-                return;
-            }
-            
-            var temp = $scope.itinerary[$scope.indexOfSelectedRow];
-            $scope.itinerary[$scope.indexOfSelectedRow] = $scope.itinerary[$scope.indexOfSelectedRow - 1];
-            $scope.itinerary[$scope.indexOfSelectedRow - 1] = temp;
+            $scope.itineraryList = ItineraryService.changeOrderOfWaypointsInItinerary("up", $scope.indexOfSelectedRow);
             $scope.indexOfSelectedRow--;
-            
-            ItineraryService.updateItinerary($scope.itinerary);
         };        
 
         $scope.moveRowDown = function() {
-            if ($scope.indexOfSelectedRow === $scope.itinerary.length - 1) {
-                return;
-            }
-                
-            var temp = $scope.itinerary[$scope.indexOfSelectedRow];
-            $scope.itinerary[$scope.indexOfSelectedRow] = $scope.itinerary[$scope.indexOfSelectedRow + 1];
-            $scope.itinerary[$scope.indexOfSelectedRow + 1] = temp;
+            $scope.itineraryList = ItineraryService.changeOrderOfWaypointsInItinerary("down", $scope.indexOfSelectedRow);
             $scope.indexOfSelectedRow++;
-            
-            ItineraryService.updateItinerary($scope.itinerary);
         };
         
         $scope.removeRow = function() {
-            if ($scope.indexOfSelectedRow != null) {
-                $scope.itinerary.splice($scope.indexOfSelectedRow, 1);
-                ItineraryService.updateItinerary($scope.itinerary);
-            }
+            $scope.itineraryList = ItineraryService.removeWaypointFromItinerary($scope.indexOfSelectedRow);
         };
     }
 ]);

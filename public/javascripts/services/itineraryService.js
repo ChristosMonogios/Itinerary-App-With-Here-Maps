@@ -4,7 +4,7 @@ mapApp.factory("ItineraryService",
         var itinerary = [];
                 
         return {
-            setRoute: function(route) {
+            addWaypointToItinerary: function(route) {
                 var thinRoute = {
                     place: route.Location.Address.Label,
                     id: route.Location.LocationId,
@@ -15,12 +15,40 @@ mapApp.factory("ItineraryService",
                 };
                 
                 currentRoute = thinRoute;
+                itinerary.push(thinRoute);
             },
             getRoute: function() {
                 return currentRoute;
             },
-            updateItinerary: function(list) {
-                itinerary = list;
+            changeOrderOfWaypointsInItinerary: function(direction, index) {
+                var temp = itinerary[index];
+                
+                if (direction === "up") {
+                    if (index === 0) {
+                        return itinerary;
+                    }
+                    
+                    itinerary[index] = itinerary[index - 1];
+                    itinerary[index - 1] = temp;
+                } else if (direction === "down") {
+                    if (index === itinerary.length - 1) {
+                        return itinerary;
+                    }
+                        
+                    itinerary[index] = itinerary[index + 1];
+                    itinerary[index + 1] = temp;                    
+                }
+                
+                return itinerary;
+            },
+            removeWaypointFromItinerary: function(index) {
+                if (index != null) {
+                    itinerary.splice(index, 1);
+                    return itinerary;
+                }
+            },
+            getItinerary: function() {
+                return itinerary;
             }
         }
     }

@@ -10,11 +10,18 @@ mapApp.controller("SearchController", ["$rootScope", "$scope", "SearchService", 
          
         $scope.search = function() {
             SearchService.get({ searchText: $scope.searchText }).$promise.then(function(data) {
-                var result = data.Response.View[0].Result;
-                if (checkIfOnlyOneResultWasReturned(result)) {
-                    ItineraryService.setRoute(result[0]);
+                var view = data.Response.View[0];
+                if (!checkIfNoMatchingResultsWasReturned(view)) {
+                    console.log("No matching results were returned");
+                    return;
+                }
+                
+                var results = view.Result;
+                
+                if (checkIfOnlyOneResultWasReturned(results)) {
+                    ItineraryService.addWaypointToItinerary(results[0]);
                 } else {
-                    $scope.searchResults = result;
+                    $scope.searchResults = results;
                     $scope.toggleResultsList();
                 }
             }).catch(function(error) {
@@ -23,13 +30,17 @@ mapApp.controller("SearchController", ["$rootScope", "$scope", "SearchService", 
         };
         
         $scope.selectRow = function(index) {
-            ItineraryService.setRoute($scope.searchResults[index]);
+            ItineraryService.addWaypointToItinerary($scope.searchResults[index]);
             $scope.searchResults = [];
             $scope.toggleResultsList();
         }
         
         function checkIfOnlyOneResultWasReturned(data) {
             return data.length === 1;
+        }
+        
+        function checkIfNoMatchingResultsWasReturned(data) {
+            return data;
         }
     }
 ]);
