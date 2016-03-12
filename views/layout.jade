@@ -1,7 +1,9 @@
 doctype html
-html
+html(ng-app="map-app")
   head
-    title= title
+    title Itinerary application
+    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    div(class="container-fluid")
+      block content
