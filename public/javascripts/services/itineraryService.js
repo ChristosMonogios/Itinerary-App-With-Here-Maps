@@ -1,9 +1,11 @@
-mapApp.factory("RouteService", function () {
+mapApp.factory("ItineraryService", function () {
         var currentRoute = "";
+        var itinerary = [];
         
         return {
-            setRoute: function(route) {
+            addRoute: function(route) {
                 currentRoute = route;
+                itinerary.push(route);
             },
             getRoute: function() {
                 return currentRoute;

@@ -1,9 +1,9 @@
-mapApp.controller("ListController", ["$rootScope", "$scope", "RouteService",
-    function ($rootScope, $scope, RouteService) {
+mapApp.controller("ListController", ["$rootScope", "$scope", "ItineraryService",
+    function ($rootScope, $scope, ItineraryService) {
         $scope.indexOfSelectedRow = null;
         $scope.itinerary = [];
         
-        $scope.$watch(function () { return RouteService.getRoute(); }, 
+        $scope.$watch(function () { return ItineraryService.getRoute(); }, 
             function (newValue, oldValue) {
                 if (newValue !== oldValue) {
                     $scope.addRow(newValue.Location.Address.Label);

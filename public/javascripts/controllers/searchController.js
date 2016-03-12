@@ -1,13 +1,35 @@
-mapApp.controller("SearchController", ["$rootScope", "$scope", "SearchService", "RouteService",
-    function ($rootScope, $scope, SearchService, RouteService) {        
-        $scope.search = function () {
-            SearchService.get({ searchText: $scope.searchText }, function(data) {
-                if (data.Response.View[0].Result.length === 1) {
-                    RouteService.setRoute(data.Response.View[0].Result[0]);
+mapApp.controller("SearchController", ["$rootScope", "$scope", "SearchService", "ItineraryService",
+    function ($rootScope, $scope, SearchService, ItineraryService) {
+        $scope.searchResults = [];
+        $scope.visible = false;
+        $scope.searchText = "";
+        
+        $scope.toggleResultsList = function() {
+            $scope.visible = !$scope.visible;
+        };
+         
+        $scope.search = function() {
+            SearchService.get({ searchText: $scope.searchText }).$promise.then(function(data) {
+                var result = data.Response.View[0].Result;
+                if (checkIfOnlyOneResultWasReturned(result)) {
+                    ItineraryService.addRoute(result[0]);
+                } else {
+                    $scope.searchResults = result;
+                    $scope.toggleResultsList();
                 }
-                
-                console.log(data);
+            }).catch(function(error) {
+                console.log(error);
             });   
         };
+        
+        $scope.selectRow = function(index) {
+            ItineraryService.addRoute($scope.searchResults[index]);
+            $scope.searchResults = [];
+            $scope.toggleResultsList();
+        }
+        
+        function checkIfOnlyOneResultWasReturned(data) {
+            return data.length === 1;
+        }
     }
 ]);
