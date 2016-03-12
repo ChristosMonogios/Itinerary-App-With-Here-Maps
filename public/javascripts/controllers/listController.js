@@ -1,11 +1,23 @@
-mapApp.controller('ListController', ['$rootScope', '$scope',
-    function ($rootScope, $scope) {
+mapApp.controller("ListController", ["$rootScope", "$scope", "RouteService",
+    function ($rootScope, $scope, RouteService) {
         $scope.indexOfSelectedRow = null;
-        $scope.itinerary = ['Athens', 'Paris', 'Berlin', 'Helsikni'];
+        $scope.itinerary = [];
+        
+        $scope.$watch(function () { return RouteService.getRoute(); }, 
+            function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    $scope.addRow(newValue.Location.Address.Label);
+                }
+            }, true
+        );       
+        
+        $scope.addRow = function(waypoint) {
+            $scope.itinerary.push(waypoint);
+        };
         
         $scope.selectRow = function(index) {
             $scope.indexOfSelectedRow = index;
-        }
+        };
 
         $scope.moveRowUp = function() {
             if ($scope.indexOfSelectedRow === 0) {
@@ -31,6 +43,6 @@ mapApp.controller('ListController', ['$rootScope', '$scope',
         
         $scope.removeRow = function() {
             $scope.itinerary.splice($scope.indexOfSelectedRow, 1);
-        }
+        };
     }
 ]);
