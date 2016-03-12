@@ -42,7 +42,9 @@ mapApp.controller("ListController", ["$rootScope", "$scope", "ItineraryService",
         };
         
         $scope.removeRow = function() {
-            $scope.itinerary.splice($scope.indexOfSelectedRow, 1);
+            if ($scope.indexOfSelectedRow != null) {
+                $scope.itinerary.splice($scope.indexOfSelectedRow, 1);
+            }
         };
     }
 ]);

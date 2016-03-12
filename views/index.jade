@@ -10,7 +10,7 @@ block content
             div.col-xs-9
               input(type="text", class="form-control input-lg col-sm-10", name="searchText", ng-model="searchText", placeholder="Search for a place",
                 required, autofocus)
-            button(class="btn btn-success btn-lg", type="submit") Search!
+            button(class="btn btn-primary btn-lg", type="submit") Search!
         div.row
           div.col-xs-9
             div(class="list-group searchResults", name="searchResults", ng-model="searchResults", ng-show="visible")
@@ -20,12 +20,13 @@ block content
     div.col-sm-6.col-md-6
       div(ng-controller="ListController")
         h1.text-center Itinerary list
-        button(ng-click="moveRowUp()") up
-        button(ng-click="moveRowDown()") down
-        button(ng-click="removeRow()") remove
+        button(ng-click="moveRowUp()", ng-show="itinerary.length > 1") up
+        button(ng-click="moveRowDown()", ng-show="itinerary.length > 1") down
+        button(ng-click="removeRow()", ng-show="itinerary.length") remove
         div(ng-model="itinerary", name="itinerary", class="list-group")
           a(href="", class="list-group-item text-center", ng-repeat="route in itinerary", ng-click="selectRow($index)",
             ng-class="{'list-group-item-info': $index === indexOfSelectedRow}")
               | {{ route }}
     div.col-sm-6.col-md-6
       h1.text-center Itinerary in map
+      div(id="map", ng-controller="MapController", style="height: 500px")
