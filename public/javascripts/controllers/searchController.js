@@ -12,7 +12,7 @@ mapApp.controller("SearchController", ["$rootScope", "$scope", "SearchService", 
             SearchService.get({ searchText: $scope.searchText }).$promise.then(function(data) {
                 var result = data.Response.View[0].Result;
                 if (checkIfOnlyOneResultWasReturned(result)) {
-                    ItineraryService.addRoute(result[0]);
+                    ItineraryService.setRoute(result[0]);
                 } else {
                     $scope.searchResults = result;
                     $scope.toggleResultsList();
@@ -23,7 +23,7 @@ mapApp.controller("SearchController", ["$rootScope", "$scope", "SearchService", 
         };
         
         $scope.selectRow = function(index) {
-            ItineraryService.addRoute($scope.searchResults[index]);
+            ItineraryService.setRoute($scope.searchResults[index]);
             $scope.searchResults = [];
             $scope.toggleResultsList();
         }

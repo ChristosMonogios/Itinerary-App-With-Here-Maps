@@ -1,14 +1,27 @@
-mapApp.factory("ItineraryService", function () {
-        var currentRoute = "";
+mapApp.factory("ItineraryService", 
+    function () {
+        var currentRoute = {};
         var itinerary = [];
-        
+                
         return {
-            addRoute: function(route) {
-                currentRoute = route;
-                itinerary.push(route);
+            setRoute: function(route) {
+                var thinRoute = {
+                    place: route.Location.Address.Label,
+                    id: route.Location.LocationId,
+                    position: {
+                        lat: route.Location.DisplayPosition.Latitude,
+                        lon: route.Location.DisplayPosition.Longitude
+                    }
+                };
+                
+                currentRoute = thinRoute;
             },
             getRoute: function() {
                 return currentRoute;
+            },
+            updateItinerary: function(list) {
+                itinerary = list;
             }
         }
-    });
+    }
+);

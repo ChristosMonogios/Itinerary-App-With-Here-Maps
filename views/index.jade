@@ -26,7 +26,7 @@ block content
         div(ng-model="itinerary", name="itinerary", class="list-group")
           a(href="", class="list-group-item text-center", ng-repeat="route in itinerary", ng-click="selectRow($index)",
             ng-class="{'list-group-item-info': $index === indexOfSelectedRow}")
-              | {{ route }}
+              | {{ route.place }}
     div.col-sm-6.col-md-6
       h1.text-center Itinerary in map
       div(id="map", ng-controller="MapController", style="height: 500px")
