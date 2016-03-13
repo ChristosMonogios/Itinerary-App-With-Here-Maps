@@ -1,13 +1,14 @@
-mapApp.controller("MapController", ["$rootScope", "$scope", "RouteService", "ItineraryService", "MapService",
-    function ($rootScope, $scope, RouteService, ItineraryService, MapService) {        
+mapApp.controller("MapController", ["$scope", "RouteService", "ItineraryService", "MapService",
+    function ($scope, RouteService, ItineraryService, MapService) {
+        
+        // init action for map area:       
         MapService.initializeMap();
         
         $scope.$watchCollection(function () { return ItineraryService.getItinerary(); }, 
             function (newItinerary, oldItinerary) {
                 if (newItinerary !== oldItinerary) {
-                    if (newItinerary.length > 1) {
-                        var transportationMode = ItineraryService.getTransportationMode();
-                        getNewRoute(transportationMode);
+                    if(isItineraryARoute(newItinerary)) {
+                        getNewRoute(ItineraryService.getItinerary(), ItineraryService.getTransportationMode());
                     } else {
                         MapService.initializeMap();
                     }
@@ -17,31 +18,47 @@ mapApp.controller("MapController", ["$rootScope", "$scope", "RouteService", "Iti
         
         $scope.$watch(function () { return ItineraryService.getTransportationMode(); }, 
             function (newMode, oldMode) {
-                if (newMode !== oldMode) {
+                if (newMode !== oldMode) { // If the mode was changed, calculate the route again
                     getNewRoute(newMode);
                 }
             }, true
         );
         
-        var getNewRoute = function(transportationMode) {
-            var itinerary = ItineraryService.getItinerary();
-            var waypointsAsGetParameters = "";
-            for(var i=0; i<itinerary.length; i++) {
-                waypointsAsGetParameters += "waypoint" + i + "=" + 
-                    itinerary[i].position.lat + "," + itinerary[i].position.lon + 
-                    (i != itinerary.length -1 ? "&" : "");
-            }
+        function getNewRoute(itinerary, transportationMode) {
+            var waypointsAsGetParameter = convertWaypointsToGETParameter(itinerary);
             
-            RouteService.get({ mode: transportationMode.mode, waypoints: waypointsAsGetParameters, combineChange: transportationMode.combineChange })
+            RouteService.get({ mode: transportationMode.mode, waypoints: waypointsAsGetParameter, combineChange: transportationMode.combineChange })
                 .$promise.then(function(data) {
                     MapService.drawRouteInMap(data);
             }).catch(function(error) {
                 if (error.data.additionalData[0].value === "NGEO_ERROR_GRAPH_DISCONNECTED") {
                     MapService.initializeMap();
-                    console.log("no route found"); // TODO: Do a bootstrap-alert
-                    return;
+                    throw new Error("We found no route for the selected transportation mode!");
                 }
+                throw new Error("An unexpected error happened. Please try again!");
             });
+        }
+        
+        function convertWaypointsToGETParameter() {
+            var itinerary = ItineraryService.getItinerary(),
+                itineraryLength = itinerary.length,
+                waypointsAsGetParameter = "";
+                
+            for(var i=0; i<itineraryLength; i++) {
+                waypointsAsGetParameter += "waypoint" + i + "=" + 
+                    itinerary[i].position.lat + "," + itinerary[i].position.lon + 
+                    (i != itinerary.length -1 ? "&" : "");
+            }
+             
+            return waypointsAsGetParameter;
+        }
+        
+        function isItineraryARoute(itinerary) {
+            if (itinerary.length >= 2) {
+                return true;
+            }
+            
+            return false;
         }
     }
 ]);

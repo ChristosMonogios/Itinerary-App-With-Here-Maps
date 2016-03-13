@@ -68,7 +68,7 @@ mapApp.factory("MapService",
                     }
                     map.setViewBounds(routeLine.getBounds());
                 } else {
-                    console.log("no route found.");
+                    throw new Error("An unexpected error happened. Please try again!");
                 }                
             }         
         }

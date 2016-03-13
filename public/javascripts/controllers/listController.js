@@ -1,5 +1,5 @@
-mapApp.controller("ListController", ["$rootScope", "$scope", "ItineraryService",
-    function ($rootScope, $scope, ItineraryService) {
+mapApp.controller("ListController", ["$scope", "ItineraryService",
+    function ($scope, ItineraryService) {
         $scope.indexOfSelectedRow = null;
         $scope.itineraryList = [];
         $scope.transportationModes = ItineraryService.getTransportationModes();

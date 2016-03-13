@@ -35,7 +35,7 @@ mapApp.factory("ItineraryService",
                     currentRoute = thinRoute;
                     itinerary.push(thinRoute);                   
                 } else {
-                    throw "waypoint is already added";
+                    throw new Error("This place is already added to your list!");
                 }
             },
             changeOrderOfWaypointsInItinerary: function(direction, index) {

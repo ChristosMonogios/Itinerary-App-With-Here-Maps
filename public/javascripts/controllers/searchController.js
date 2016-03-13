@@ -1,19 +1,18 @@
-mapApp.controller("SearchController", ["$rootScope", "$scope", "SearchService", "ItineraryService",
-    function ($rootScope, $scope, SearchService, ItineraryService) {
+mapApp.controller("SearchController", ["$scope", "SearchService", "ItineraryService",
+    function ($scope, SearchService, ItineraryService) {
         $scope.searchResults = [];
-        $scope.visible = false;
+        $scope.isResultsListVisible = false;
         $scope.searchText = "";
         
         $scope.toggleResultsList = function() {
-            $scope.visible = !$scope.visible;
+            $scope.isResultsListVisible = !$scope.isResultsListVisible;
         };
          
         $scope.search = function() {
             SearchService.get({ searchText: $scope.searchText }).$promise.then(function(data) {
                 var view = data.Response.View[0];
                 if (!checkIfNoMatchingResultsWasReturned(view)) {
-                    console.log("No matching results were returned");
-                    return;
+                    throw new Error("No matching results were returned!");
                 }
                 
                 var results = view.Result;
@@ -25,7 +24,7 @@ mapApp.controller("SearchController", ["$rootScope", "$scope", "SearchService", 
                     $scope.toggleResultsList();
                 }
             }).catch(function(error) {
-                console.log(error);
+                throw new Error(error.message);
             });   
         };
         

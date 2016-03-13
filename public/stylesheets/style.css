@@ -1,6 +1,6 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #f2f2f2;
 }
 
 a {
@@ -15,4 +15,19 @@ a {
     max-height: 150px;
     overflow-y:scroll;
     overflow-x: hidden;
+}
+
+.jumbotron {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: transparent;
+}
+
+.row {
+    margin-bottom: 10px;
+}
+
+.container-fluid {
+    padding-left: 20px;
+    padding-right: 20px;
 }
