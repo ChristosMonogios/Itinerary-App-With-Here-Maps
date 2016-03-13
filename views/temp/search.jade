@@ -1,0 +1,21 @@
+div.row.jumbotron
+  div.col-xs-12.col-sm-12.col-md-8.col-lg-8.col-md-offset-2
+    div(class="alert alert-{{alert.type}} alert-dismissible", role="alert", ng-show="alert")
+    button(type="button", class="close", data-dismiss="alert", aria-label="Close")
+        span(aria-hidden="true")
+        | &times;
+    {{ alert.message }}
+    div(ng-controller="SearchController")
+    h1.text-center Welcome to the itinerary application!
+    div.row
+        form(class="form-search", role="form", ng-submit="search()")
+        div.col-xs-12.col-sm-12.col-md-6.col-lg-6.col-md-offset-2
+            input(type="text", class="form-control input-lg", name="searchText", ng-model="searchText", placeholder="Search for a place",
+            required, autofocus)
+        div.col-xs-8.col-sm-8.col-md-2.col-lg-2
+            button(class="btn btn-primary btn-lg", type="submit") Add it to the list!
+    div.row
+        div.col-xs-12.col-sm-12.col-md-6.col-lg-6.col-md-offset-2
+        div(class="list-group searchResults", name="searchResults", ng-model="searchResults", ng-show="isResultsListVisible")
+            a(href="", class="list-group-item text-center", ng-repeat="result in searchResults", ng-click="selectRow($index)")
+            | {{ result.Location.Address.Label }}  
