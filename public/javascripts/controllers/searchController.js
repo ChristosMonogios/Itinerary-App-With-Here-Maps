@@ -18,6 +18,10 @@ mapApp.controller("SearchController", ["$scope", "SearchService", "ItineraryServ
                 var results = view.Result;
                 
                 if (checkIfOnlyOneResultWasReturned(results)) {
+                    if ($scope.isResultsListVisible) {
+                        $scope.toggleResultsList();
+                    }
+                    
                     ItineraryService.addWaypointToItinerary(results[0]);
                 } else {
                     $scope.searchResults = results;

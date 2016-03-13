@@ -23,7 +23,7 @@ mapApp.factory("ItineraryService",
         
         function checkForInvalidIndex(index) {
             if (!index && typeof index !== "number") {
-                return true;
+                throw new Error("The specified key is wrong. Please try again");
             }
             
             return false;
@@ -48,9 +48,8 @@ mapApp.factory("ItineraryService",
                 }
             },
             changeOrderOfWaypointsInItinerary: function(direction, index) {
-                if (checkForInvalidIndex(index)) {
-                    throw new Error("Cannot insert this route in the itinerary!");
-                }
+                if (!checkForInvalidIndex(index)) {
+
                 
                 var temp = itinerary[index];
                 
@@ -68,6 +67,8 @@ mapApp.factory("ItineraryService",
                         
                     itinerary[index] = itinerary[index + 1];
                     itinerary[index + 1] = temp;                    
+                }
+                                    
                 }
                 
                 return itinerary;

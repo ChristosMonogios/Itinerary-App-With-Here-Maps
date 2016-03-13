@@ -8,7 +8,7 @@ mapApp.controller("ListController", ["$scope", "$sce", "ItineraryService",
         
         $scope.$watch("currentTransportationMode", 
             function (newValue, oldValue) {
-                if (newValue !== oldValue) {
+                if (newValue.mode !== oldValue.mode) {
                     ItineraryService.setTransportationMode(newValue);
                 }
             }, true
@@ -16,9 +16,7 @@ mapApp.controller("ListController", ["$scope", "$sce", "ItineraryService",
         
         $scope.$watchCollection(function () { return ItineraryService.getItinerary(); }, 
             function (newItinerary, oldItinerary) {
-                if (newItinerary !== oldItinerary) {
-                    $scope.itineraryList = newItinerary;
-                }
+                $scope.itineraryList = newItinerary;
             }
         );
 
@@ -31,6 +29,9 @@ mapApp.controller("ListController", ["$scope", "$sce", "ItineraryService",
         );       
 
         $scope.selectRow = function(index) {
+            if (!index && typeof index !== "number") {
+                index = 0;
+            }
             $scope.indexOfSelectedRow = index;
         };
 
