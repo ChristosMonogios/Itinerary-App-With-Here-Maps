@@ -2,6 +2,23 @@ mapApp.factory("ItineraryService",
     function () {
         var currentRoute = {};
         var itinerary = [];
+        var transportationModes = [
+            { type: "Car", mode: "fastest;car", combineChange: "" },
+            { type: "Public transportation", mode: "fastest;publicTransport", combineChange: true },
+            { type: "On feet", mode: "fastest;pedestrian", combineChange: "" }
+        ];
+        var currentTransportationMode = transportationModes[0];
+        
+        function checkIfWaypointIsNotInItinerary(currentWaypointId) {
+            var itineraryLength = itinerary.length;
+            
+            for (var i=0; i<itineraryLength; i++) {
+                if (currentWaypointId === itinerary[i].id) {
+                    return false;
+                }
+            }
+            return true;
+        }
                 
         return {
             addWaypointToItinerary: function(route) {
@@ -14,11 +31,12 @@ mapApp.factory("ItineraryService",
                     }
                 };
                 
-                currentRoute = thinRoute;
-                itinerary.push(thinRoute);
-            },
-            getRoute: function() {
-                return currentRoute;
+                if (checkIfWaypointIsNotInItinerary(thinRoute.id)) {
+                    currentRoute = thinRoute;
+                    itinerary.push(thinRoute);                   
+                } else {
+                    throw "waypoint is already added";
+                }
             },
             changeOrderOfWaypointsInItinerary: function(direction, index) {
                 var temp = itinerary[index];
@@ -49,6 +67,15 @@ mapApp.factory("ItineraryService",
             },
             getItinerary: function() {
                 return itinerary;
+            },
+            setTransportationMode: function(mode) {
+                currentTransportationMode = mode;
+            },
+            getTransportationMode: function() {
+                return currentTransportationMode;
+            },
+            getTransportationModes: function() {
+                return transportationModes;
             }
         }
     }

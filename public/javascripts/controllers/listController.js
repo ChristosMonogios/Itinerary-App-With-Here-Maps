@@ -2,19 +2,25 @@ mapApp.controller("ListController", ["$rootScope", "$scope", "ItineraryService",
     function ($rootScope, $scope, ItineraryService) {
         $scope.indexOfSelectedRow = null;
         $scope.itineraryList = [];
+        $scope.transportationModes = ItineraryService.getTransportationModes();
+        $scope.currentTransportationMode = ItineraryService.getTransportationMode();
         
-        $scope.$watch(function () { return ItineraryService.getRoute(); }, 
+        $scope.$watch("currentTransportationMode", 
             function (newValue, oldValue) {
                 if (newValue !== oldValue) {
-                    $scope.addRowInTheList(newValue);
+                    ItineraryService.setTransportationMode(newValue);
                 }
             }, true
+        ); 
+        
+        $scope.$watchCollection(function () { return ItineraryService.getItinerary(); }, 
+            function (newItinerary, oldItinerary) {
+                if (newItinerary !== oldItinerary) {
+                    $scope.itineraryList = newItinerary;
+                }
+            }
         );       
-        
-        $scope.addRowInTheList = function(waypoint) {
-            $scope.itineraryList.push(waypoint);
-        };
-        
+
         $scope.selectRow = function(index) {
             $scope.indexOfSelectedRow = index;
         };

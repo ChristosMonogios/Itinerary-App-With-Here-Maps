@@ -20,6 +20,8 @@ block content
     div.col-sm-6.col-md-6
       div(ng-controller="ListController")
         h1.text-center Itinerary list
+        select(ng-model="currentTransportationMode", ng-options="x.type for x in transportationModes",
+            ng-init="currentTransportationMode")
         button(ng-click="moveRowUp()", ng-show="itineraryList.length > 1") up
         button(ng-click="moveRowDown()", ng-show="itineraryList.length > 1") down
         button(ng-click="removeRow()", ng-show="itineraryList.length") remove
