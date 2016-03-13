@@ -20,6 +20,14 @@ mapApp.factory("ItineraryService",
             }
             return true;
         }
+        
+        function checkForInvalidIndex(index) {
+            if (!index && typeof index !== "number") {
+                return true;
+            }
+            
+            return false;
+        }
                 
         return {
             addWaypointToItinerary: function(route) {
@@ -40,6 +48,10 @@ mapApp.factory("ItineraryService",
                 }
             },
             changeOrderOfWaypointsInItinerary: function(direction, index) {
+                if (checkForInvalidIndex(index)) {
+                    throw new Error("Cannot insert this route in the itinerary!");
+                }
+                
                 var temp = itinerary[index];
                 
                 if (direction === "up") {
@@ -61,7 +73,7 @@ mapApp.factory("ItineraryService",
                 return itinerary;
             },
             removeWaypointFromItinerary: function(index) {
-                if (index != null) {
+                if (!checkForInvalidIndex(index)) {
                     itinerary.splice(index, 1);
                     return itinerary;
                 }
