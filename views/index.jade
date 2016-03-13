@@ -45,6 +45,9 @@ block content
             a(href="", class="list-group-item text-center", ng-repeat="route in itineraryList", ng-click="selectRow($index)",
               ng-class="{'list-group-item-info': $index === indexOfSelectedRow}")
                 | {{ route.place }}
+        div.row
+          div.col-xs-12.col-sm-12.col-md-6.col-lg-6.col-md-offset-6
+            div(class="alert alert-info", ng-bind-html="summaryText", ng-show="summaryText")
     div.col-xs-12.col-sm-12.col-md-6.col-lg-6
       h2.text-center Your itinerary in the map
       div(id="map", ng-controller="MapController", style="height: 500px")

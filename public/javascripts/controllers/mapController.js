@@ -18,8 +18,8 @@ mapApp.controller("MapController", ["$scope", "RouteService", "ItineraryService"
         
         $scope.$watch(function () { return ItineraryService.getTransportationMode(); }, 
             function (newMode, oldMode) {
-                if (newMode !== oldMode) { // If the mode was changed, calculate the route again
-                    getNewRoute(newMode);
+                if (newMode.mode !== oldMode.mode) { // If the mode was changed, calculate the route again
+                    getNewRoute(ItineraryService.getItinerary(), newMode);
                 }
             }, true
         );
@@ -29,9 +29,11 @@ mapApp.controller("MapController", ["$scope", "RouteService", "ItineraryService"
             
             RouteService.get({ mode: transportationMode.mode, waypoints: waypointsAsGetParameter, combineChange: transportationMode.combineChange })
                 .$promise.then(function(data) {
+                    ItineraryService.setSummaryText(data.response.route[0].summary.text);
                     MapService.drawRouteInMap(data);
             }).catch(function(error) {
                 if (error.data.additionalData[0].value === "NGEO_ERROR_GRAPH_DISCONNECTED") {
+                    ItineraryService.setSummaryText("");
                     MapService.initializeMap();
                     throw new Error("We found no route for the selected transportation mode!");
                 }

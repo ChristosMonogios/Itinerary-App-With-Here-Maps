@@ -8,6 +8,7 @@ mapApp.factory("ItineraryService",
             { type: "On feet", mode: "fastest;pedestrian", combineChange: "" }
         ];
         var currentTransportationMode = transportationModes[0];
+        var summaryText = "";
         
         function checkIfWaypointIsNotInItinerary(currentWaypointId) {
             var itineraryLength = itinerary.length;
@@ -76,6 +77,12 @@ mapApp.factory("ItineraryService",
             },
             getTransportationModes: function() {
                 return transportationModes;
+            },
+            getSummaryText: function() {
+                return summaryText;
+            },
+            setSummaryText: function(text) {
+                summaryText = text
             }
         }
     }
