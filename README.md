@@ -54,8 +54,12 @@ Inside the public/javascripts folder you can find the following folders/ files:
  
 ## Few words about the testing files
 For testing the application the Jasmine framework was used. As test runner I chose Karma. The ListController and ItineraryService were tested. The rest of code will be also tested.
+You can test the application by typing the following command from the root of the project: **npm test**
+
+## Few words about the gulp file
+A simle deployment task was created with gulp. You can run the task by running the following command from the root of the project: **gulp**
 
 ## Final words
-In total I invested two mornings of a weekend on this project and I really enjoyed doing this application. I hope you have fun using it and that you can identify my coding style with JavaScript and Angular.
+In total I invested a weekend on this project and I really enjoyed doing this application. I hope you have fun using it and that you can identify my coding style with JavaScript and Angular.
 
 Christos Monogios
