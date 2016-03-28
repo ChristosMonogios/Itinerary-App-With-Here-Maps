@@ -10,7 +10,7 @@ mapApp.controller("MapController", ["$scope", "RouteService", "ItineraryService"
                     if(isItineraryARoute(newItinerary)) {
                         getNewRoute(ItineraryService.getItinerary(), ItineraryService.getTransportationMode());
                     } else {
-                        MapService.initializeMap();
+                        MapService.showPositionInMap(newItinerary[0].position.lat, newItinerary[0].position.lon);
                     }
                 }
             }

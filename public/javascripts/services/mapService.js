@@ -74,6 +74,14 @@ mapApp.factory("MapService",
                 } else {
                     throw new Error("An unexpected error happened. Please try again!");
                 }                
+            },
+            
+            showPositionInMap(lat, lng) {
+                map.setCenter({
+                    lat: lat, 
+                    lng: lng
+                });
+                map.setZoom(10);                
             }         
         }
     }
