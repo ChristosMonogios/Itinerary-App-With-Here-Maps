@@ -9,6 +9,7 @@ mapApp.factory("ItineraryService",
         ];
         var currentTransportationMode = transportationModes[0];
         var summaryText = "";
+        var currentIndex = 0;
         
         function checkIfWaypointIsNotInItinerary(currentWaypointId) {
             var itineraryLength = itinerary.length;
@@ -49,26 +50,29 @@ mapApp.factory("ItineraryService",
             },
             changeOrderOfWaypointsInItinerary: function(direction, index) {
                 if (!checkForInvalidIndex(index)) {
-
-                
-                var temp = itinerary[index];
-                
-                if (direction === "up") {
-                    if (index === 0) {
-                        return itinerary;
-                    }
+                    var temp = itinerary[index];
                     
-                    itinerary[index] = itinerary[index - 1];
-                    itinerary[index - 1] = temp;
-                } else if (direction === "down") {
-                    if (index === itinerary.length - 1) {
-                        return itinerary;
-                    }
+                    if (direction === "up") {
+                        if (index === 0) {
+                            currentIndex = 0;
+                            return itinerary;
+                        }
                         
-                    itinerary[index] = itinerary[index + 1];
-                    itinerary[index + 1] = temp;                    
-                }
-                                    
+                        itinerary[index] = itinerary[index - 1];
+                        itinerary[index - 1] = temp;
+                        
+                        currentIndex = --index; 
+                    } else if (direction === "down") {
+                        if (index === itinerary.length - 1) {
+                            currentIndex = itinerary.length - 1;
+                            return itinerary;
+                        }
+                            
+                        itinerary[index] = itinerary[index + 1];
+                        itinerary[index + 1] = temp;
+                        
+                        currentIndex = ++index;                     
+                    }
                 }
                 
                 return itinerary;
@@ -96,6 +100,12 @@ mapApp.factory("ItineraryService",
             },
             setSummaryText: function(text) {
                 summaryText = text
+            },
+            getCurrentIndexOfItinerary: function() {
+                return currentIndex;
+            },
+            setCurrentIndexOfItinerary: function(index) {
+                currentIndex = index;
             }
         }
     }

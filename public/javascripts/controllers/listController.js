@@ -32,17 +32,19 @@ mapApp.controller("ListController", ["$scope", "$sce", "ItineraryService",
             if (!index && typeof index !== "number") {
                 index = 0;
             }
-            $scope.indexOfSelectedRow = index;
+            
+            ItineraryService.setCurrentIndexOfItinerary(index);
+            $scope.indexOfSelectedRow = ItineraryService.getCurrentIndexOfItinerary();
         };
 
         $scope.moveRowUp = function() {
             $scope.itineraryList = ItineraryService.changeOrderOfWaypointsInItinerary("up", $scope.indexOfSelectedRow);
-            $scope.indexOfSelectedRow--;
+            $scope.indexOfSelectedRow = ItineraryService.getCurrentIndexOfItinerary();
         };        
 
         $scope.moveRowDown = function() {
             $scope.itineraryList = ItineraryService.changeOrderOfWaypointsInItinerary("down", $scope.indexOfSelectedRow);
-            $scope.indexOfSelectedRow++;
+            $scope.indexOfSelectedRow = ItineraryService.getCurrentIndexOfItinerary();
         };
         
         $scope.removeRow = function() {

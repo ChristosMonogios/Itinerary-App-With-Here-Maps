@@ -18,6 +18,7 @@ mapApp.controller("SearchController", ["$scope", "SearchService", "ItineraryServ
                 var results = view.Result;
                 
                 if (checkIfOnlyOneResultWasReturned(results)) {
+                    $scope.searchText = null; // empty the input field when something was added in list
                     if ($scope.isResultsListVisible) {
                         $scope.toggleResultsList();
                     }

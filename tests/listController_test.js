@@ -79,6 +79,18 @@ describe("Controller: ListController", function() {
         expect(scope.itineraryList[0].id).toEqual("NT_f6msIgQMSfGdaLF.tsj6FC");
     });
     
+    it("should not change the current selected index when the topmost row is moved up", function() {
+        scope.indexOfSelectedRow = 0;
+        scope.moveRowUp();
+        expect(scope.indexOfSelectedRow).toEqual(0);
+    });
+    
+    it("should not change the current selected index when the lowermost row is moved down", function() {
+        scope.indexOfSelectedRow = scope.itineraryList.length - 1;
+        scope.moveRowDown();
+        expect(scope.indexOfSelectedRow).toEqual(scope.itineraryList.length - 1);
+    });
+    
     it("should remove one element of the itinerary and update the list", function() {
         scope.indexOfSelectedRow = 0;
         scope.removeRow();
