@@ -9,12 +9,12 @@ mapApp.factory("MapService",
             useHTTPS: false
         });
         
-        var defaultLayers = platform.createDefaultLayers();        
+        var defaultLayers = platform.createDefaultLayers();
+        var previousRouteLine = null;     
         
         return {
             initializeMap: function() {
                 var mapDiv = document.getElementById("map");
-                mapDiv.innerHTML = ""; // HACK: How can I update the map with HERE properties?
                 
                 map = new H.Map(mapDiv,
                     defaultLayers.normal.map, {
@@ -57,8 +57,12 @@ mapApp.factory("MapService",
                             }
                     });
 
-                    this.initializeMap();
+                    if (previousRouteLine) {
+                        map.removeObject(previousRouteLine);  
+                    }
+                    
                     map.addObject(routeLine);
+                    previousRouteLine = routeLine;
                     
                     for (var i=0; i<markers.length; i++) {
                         map.addObject(new H.map.Marker({
