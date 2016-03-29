@@ -77,6 +77,10 @@ mapApp.factory("MapService",
             },
             
             showPositionInMap(lat, lng) {
+                if (previousRouteLine) {
+                    map.removeObject(previousRouteLine);  
+                }
+                    
                 map.setCenter({
                     lat: lat, 
                     lng: lng

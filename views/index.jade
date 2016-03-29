@@ -9,7 +9,7 @@ block content
             | &times;
         {{ alert.message }}
       div(ng-controller="SearchController")
-        h1.text-center Welcome to the itinerary application!
+        h2.text-center Welcome to the itinerary application!
         div.row
           form(class="form-search", role="form", ng-submit="search()")
             div.col-xs-12.col-sm-12.col-md-6.col-lg-6.col-md-offset-2
@@ -25,7 +25,7 @@ block content
   div.row
     div.col-xs-12.col-sm-12.col-md-6.col-lg-6
       div(ng-controller="ListController")
-        h2.text-center Your itinerary list
+        h3.text-center Your itinerary list
         div.row
           div.col-xs-4.col-sm-4.col-md-4.col-lg-4
             select(class="form-control text-left", ng-model="currentTransportationMode", ng-options="x.type for x in transportationModes",
@@ -49,5 +49,5 @@ block content
           div.col-xs-12.col-sm-12.col-md-6.col-lg-6.col-md-offset-6
             div(class="alert alert-info", ng-bind-html="summaryText", ng-show="itineraryList.length > 1")
     div.col-xs-12.col-sm-12.col-md-6.col-lg-6
-      h2.text-center Your itinerary in the map
-      div(id="map", ng-controller="MapController", style="height: 500px")
+      h3.text-center Your itinerary in the map
+      div(id="map", ng-controller="MapController")

@@ -9,7 +9,7 @@ mapApp.controller("MapController", ["$scope", "RouteService", "ItineraryService"
                 if (newItinerary !== oldItinerary) {
                     if(isItineraryARoute(newItinerary)) {
                         getNewRoute(ItineraryService.getItinerary(), ItineraryService.getTransportationMode());
-                    } else {
+                    } else if (isItineraryASinglePoint(newItinerary)) {
                         MapService.showPositionInMap(newItinerary[0].position.lat, newItinerary[0].position.lon);
                     }
                 }
@@ -57,6 +57,14 @@ mapApp.controller("MapController", ["$scope", "RouteService", "ItineraryService"
         
         function isItineraryARoute(itinerary) {
             if (itinerary.length >= 2) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        function isItineraryASinglePoint(itinerary) {
+            if (itinerary.length === 1) {
                 return true;
             }
             
