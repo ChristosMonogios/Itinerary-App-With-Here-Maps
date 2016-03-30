@@ -32,9 +32,9 @@ mapApp.controller("MapController", ["$scope", "RouteService", "ItineraryService"
                     ItineraryService.setSummaryText(data.response.route[0].summary.text);
                     MapService.drawRouteInMap(data);
             }).catch(function(error) {
-                if (error.data.additionalData[0].value === "NGEO_ERROR_GRAPH_DISCONNECTED") {
+                if (error.data && error.data.additionalData[0].value === "NGEO_ERROR_GRAPH_DISCONNECTED") {
                     ItineraryService.setSummaryText("");
-                    MapService.initializeMap();
+                    MapService.removeRouteFromMap();
                     throw new Error("We found no route for the selected transportation mode!");
                 }
                 throw new Error("An unexpected error happened. Please try again!");

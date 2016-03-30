@@ -12,6 +12,12 @@ mapApp.factory("MapService",
         var defaultLayers = platform.createDefaultLayers();
         var previousRouteLine = null;     
         
+        function removeRoute() {
+            if (previousRouteLine) {
+                map.removeObject(previousRouteLine);  
+            }                
+        }
+        
         return {
             initializeMap: function() {
                 var mapDiv = document.getElementById("map");
@@ -56,37 +62,41 @@ mapApp.factory("MapService",
                             lineWidth: 4 
                             }
                     });
-
-                    if (previousRouteLine) {
-                        map.removeObject(previousRouteLine);  
-                    }
                     
-                    map.addObject(routeLine);
-                    previousRouteLine = routeLine;
-                    
-                    for (var i=0; i<markers.length; i++) {
-                        map.addObject(new H.map.Marker({
-                            lat: markers[i].latitude,
-                            lng: markers[i].longitude
-                        }));
+                    try {
+                        removeRoute();                    
+                    } catch(ex) {
+                        console.log(ex);
+                    } finally {
+                        map.addObject(routeLine);
+                        previousRouteLine = routeLine;
+                        
+                        for (var i=0; i<markers.length; i++) {
+                            map.addObject(new H.map.Marker({
+                                lat: markers[i].latitude,
+                                lng: markers[i].longitude
+                            }));
+                        }
+                        map.setViewBounds(routeLine.getBounds());                        
                     }
-                    map.setViewBounds(routeLine.getBounds());
                 } else {
                     throw new Error("An unexpected error happened. Please try again!");
                 }                
             },
             
             showPositionInMap(lat, lng) {
-                if (previousRouteLine) {
-                    map.removeObject(previousRouteLine);  
-                }
+                removeRoute();
                     
                 map.setCenter({
                     lat: lat, 
                     lng: lng
                 });
                 map.setZoom(10);                
-            }         
+            },
+            
+            removeRouteFromMap() {
+                removeRoute();              
+            }    
         }
     }
 );
